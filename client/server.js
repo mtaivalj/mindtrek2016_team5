@@ -7,6 +7,11 @@ app.get('/index.html', function (req, res) {
    res.sendFile( __dirname + "/" + "index.html" );
 });
 
+app.use(express.static('public'));
+app.get('/jquery.js', function (req, res) {
+   res.sendFile( __dirname + "/" + "jquery.js" );
+});
+
 app.get('/exec', function (req, res) {
    // res.end(JSON.stringify(req.query));
    var command = req.query.command;
