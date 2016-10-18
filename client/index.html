@@ -4,6 +4,9 @@
 <head lang="en">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+
     <style>
 
         html {
@@ -63,7 +66,7 @@
     </style>
 </head>
 
-<body> 
+<body>
 
     <div class="content">
         <div class="up text" id="up">
@@ -162,7 +165,7 @@
                     leftParam = "1";
                 }
                 if (rightKey) {
-                    rightParam = "1";
+                    rightParam = "2";
                 }
 
                 command = leftParam + "," + rightParam + "," + upParam;
@@ -172,12 +175,15 @@
                 document.getElementById("command").textContent = command;
             }
 
-            var theUrl = "localhost:8081/exec?command=" + command;
+            var theUrl = "exec?command=" + command;
 
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-            xmlHttp.send( null );
-            console.log("theUrl", theUrl);
+            jQuery.get(
+                 {url: theUrl});
+
+            // var xmlHttp = new XMLHttpRequest();
+            // xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+            // xmlHttp.send( null );
+            // console.log("theUrl", theUrl);
             //return xmlHttp.responseText;
         };
 
