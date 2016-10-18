@@ -19,8 +19,12 @@ app.get('/exec', function (req, res) {
    var run = 'java -jar manual.jar "' + command+'"';
 
    child = exec(run, function (error, stdout, stderr) {
-      // var json = JSON.parse(stdout);
-      // res.end(JSON.stringify(json.data));
+      console.log("stdout", stdout);
+      console.log("stderr", stderr);
+      if(error) {
+         console.log("error", error);
+      }
+      res.end(null);
    });
 })
 
