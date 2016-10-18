@@ -85,7 +85,11 @@
         Given command:
         <div id="command">
         </div>
-        <div class="viz-container">
+    </div>
+
+    <script type="text/javascript">
+
+        /*<div class="viz-container">
             <svg  width="400" height="400">
                 <line id="viz"
                       x1="200" y1="200"
@@ -93,59 +97,76 @@
                       stroke-width="2"
                       stroke="white"/>
             </svg>
-        </div>
-    </div>
-
-    <script type="text/javascript">
+        </div>*/
 
         var upKey = false;
         var leftKey = false;
         var rightKey = false;
 
+        var prevUpKey = false;
+        var prevLeftKey = false;
+        var prevRightKey = false;
+
+        var keyWasReset = true;
+
         document.addEventListener("keydown", function(event) {
             if(event.code === "ArrowUp") {
                 document.getElementById("up").style.background = "#183693";
                 document.getElementById("up").style.color = "white";
-                document.getElementById("viz").setAttribute("y2", "50");
+                //document.getElementById("viz").setAttribute("y2", "50");
 
                 upKey = true;
             } else if(event.code === "ArrowLeft") {
                 document.getElementById("left").style.background = "#183693";
                 document.getElementById("left").style.color = "white";
-                document.getElementById("viz").setAttribute("x2", "50");
+                //document.getElementById("viz").setAttribute("x2", "50");
 
                 leftKey = true;
             } else if(event.code === "ArrowRight") {
                 document.getElementById("right").style.background = "#183693";
                 document.getElementById("right").style.color = "white";
-                document.getElementById("viz").setAttribute("x2", "350");
+                //document.getElementById("viz").setAttribute("x2", "350");
 
                 rightKey = true;
             }
 
-            formCommand(upKey, rightKey, leftKey);
+            //if (keyWasReset) {
+            if (keyWasReset ||
+                (upKey !== prevUpKey) ||
+                (leftKey !== prevLeftKey) ||
+                (rightKey !== prevRightKey)) {
+
+                formCommand(upKey, rightKey, leftKey);
+
+                prevUpKey = upKey;
+                prevLeftKey = leftKey;
+                prevRightKey = rightKey;
+
+                keyWasReset = false;
+            }
         });
         document.addEventListener("keyup", function(event) {
             if(event.code === "ArrowUp") {
                 document.getElementById("up").style.background = "none";
                 document.getElementById("up").style.color = "darkgrey";
-                document.getElementById("viz").setAttribute("y2", "200");
+                //document.getElementById("viz").setAttribute("y2", "200");
 
                 upKey = false;
             } else if(event.code === "ArrowLeft") {
                 document.getElementById("left").style.background = "none";
                 document.getElementById("left").style.color = "darkgrey";
-                document.getElementById("viz").setAttribute("x2", "200");
+                //document.getElementById("viz").setAttribute("x2", "200");
 
                 leftKey = false;
             } else if(event.code === "ArrowRight") {
                 document.getElementById("right").style.background = "none";
                 document.getElementById("right").style.color = "darkgrey";
-                document.getElementById("viz").setAttribute("x2", "200");
+                //document.getElementById("viz").setAttribute("x2", "200");
 
                 rightKey = false;
             }
 
+            keyWasReset = true;
             resetCommand(upKey, rightKey, leftKey);
         });
 
@@ -154,30 +175,38 @@
         var rightParam = "0";
         var upParam = "0";
 
+        var commandTimeout;
+
         var formCommand = function(upKey, rightKey, leftKey) {
-            //console.log(upKey, rightKey, leftKey);
+            //console.log("formCommand", upKey, rightKey, leftKey);
 
-            if (upKey || leftKey || rightKey) {
+            clearTimeout(commandTimeout);
+            commandTimeout = setTimeout(function() {
+                if (upKey || leftKey || rightKey) {
 
-                if (upKey) {
-                    upParam = "UP";
+                    if (upKey) {
+                        upParam = "UP";
+                    }
+                    if (leftKey) {
+                        leftParam = "1";
+                    }
+                    if (rightKey) {
+                        rightParam = "2";
+                    }
+
+                    command = leftParam + "," + rightParam + "," + upParam;
+                    document.getElementById("command").textContent = command;
+
+                    console.log("command", command);
+
+                    var requestUrl = "exec?command=" + command;
+                    jQuery.get({url: requestUrl});
                 }
-                if (leftKey) {
-                    leftParam = "1";
-                }
-                if (rightKey) {
-                    rightParam = "2";
-                }
-
-                command = leftParam + "," + rightParam + "," + upParam;
-                document.getElementById("command").textContent = command;
-
-                var requestUrl = "exec?command=" + command;
-                jQuery.get({url: requestUrl});
-            }
+            }, 50);
         };
 
         var resetCommand = function(upKey, rightKey, leftKey) {
+            //console.log("resetCommand");
             leftParam = "0";
             rightParam = "0";
             upParam = "0";
