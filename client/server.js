@@ -7,16 +7,26 @@ app.get('/index.html', function (req, res) {
    res.sendFile( __dirname + "/" + "index.html" );
 });
 
+app.use(express.static('public'));
+app.get('/jquery.js', function (req, res) {
+   res.sendFile( __dirname + "/" + "jquery.js" );
+});
+
 app.get('/exec', function (req, res) {
    // res.end(JSON.stringify(req.query));
    var command = req.query.command;
 
-   child = exec('java -jar test.jar "' + command+'"', function (error, stdout, stderr) {
-      var json = JSON.parse(stdout);
-      res.end(JSON.stringify(json.data));
+   var run = 'java -jar manual.jar "' + command+'"';
+
+   child = exec(run, function (error, stdout, stderr) {
+      console.log("stdout", stdout);
+      console.log("stderr", stderr);
+      if(error) {
+         console.log("error", error);
+      }
+      res.end(null);
    });
 })
-
 
 var server = app.listen(8081, function () {
    var host = server.address().address
