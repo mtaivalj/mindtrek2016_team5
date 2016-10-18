@@ -18,6 +18,8 @@ app.get('/exec', function (req, res) {
 
    var run = 'java -jar manual.jar "' + command+'"';
 
+   console.log("-----", run);
+
    child = exec(run, function (error, stdout, stderr) {
       console.log("stdout", stdout);
       console.log("stderr", stderr);

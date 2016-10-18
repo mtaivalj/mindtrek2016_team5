@@ -125,28 +125,28 @@
 
             formCommand(upKey, rightKey, leftKey);
         });
-        document.addEventListener("keyup", function(event) {
-            if(event.code === "ArrowUp") {
-                document.getElementById("up").style.background = "none";
-                document.getElementById("up").style.color = "darkgrey";
-                document.getElementById("viz").setAttribute("y2", "200");
+        // document.addEventListener("keyup", function(event) {
+        //     if(event.code === "ArrowUp") {
+        //         document.getElementById("up").style.background = "none";
+        //         document.getElementById("up").style.color = "darkgrey";
+        //         document.getElementById("viz").setAttribute("y2", "200");
 
-                upKey = false;
-            } else if(event.code === "ArrowLeft") {
-                document.getElementById("left").style.background = "none";
-                document.getElementById("left").style.color = "darkgrey";
-                document.getElementById("viz").setAttribute("x2", "200");
+        //         upKey = false;
+        //     } else if(event.code === "ArrowLeft") {
+        //         document.getElementById("left").style.background = "none";
+        //         document.getElementById("left").style.color = "darkgrey";
+        //         document.getElementById("viz").setAttribute("x2", "200");
 
-                leftKey = false;
-            } else if(event.code === "ArrowRight") {
-                document.getElementById("right").style.background = "none";
-                document.getElementById("right").style.color = "darkgrey";
-                document.getElementById("viz").setAttribute("x2", "200");
+        //         leftKey = false;
+        //     } else if(event.code === "ArrowRight") {
+        //         document.getElementById("right").style.background = "none";
+        //         document.getElementById("right").style.color = "darkgrey";
+        //         document.getElementById("viz").setAttribute("x2", "200");
 
-                rightKey = false;
-            }
-            formCommand(upKey, rightKey, leftKey);
-        });
+        //         rightKey = false;
+        //     }
+        //     formCommand(upKey, rightKey, leftKey);
+        // });
 
         var formCommand = function(upKey, rightKey, leftKey) {
             var command;
@@ -176,9 +176,9 @@
             }
 
             var theUrl = "exec?command=" + command;
-
             jQuery.get(
                  {url: theUrl});
+
 
             // var xmlHttp = new XMLHttpRequest();
             // xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
