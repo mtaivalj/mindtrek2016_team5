@@ -80,6 +80,9 @@
                 Right motor
             </div>
         </div>
+        <div class="down text" id="down">
+            No lift
+        </div>
     </div>
     <div class="sub-container" id="sub-container">
         Given command:
@@ -102,10 +105,12 @@
         var upKey = false;
         var leftKey = false;
         var rightKey = false;
+        var downKey = false;
 
         var prevUpKey = false;
         var prevLeftKey = false;
         var prevRightKey = false;
+        var prevDownKey = false;
 
         var keyWasReset = true;
 
@@ -128,19 +133,26 @@
                 //document.getElementById("viz").setAttribute("x2", "350");
 
                 rightKey = true;
+            } else if(event.code === "ArrowDown") {
+                document.getElementById("down").style.background = "#183693";
+                document.getElementById("down").style.color = "white";
+
+                downKey = true;
             }
 
             //if (keyWasReset) {
             if (keyWasReset ||
                 (upKey !== prevUpKey) ||
                 (leftKey !== prevLeftKey) ||
-                (rightKey !== prevRightKey)) {
+                (rightKey !== prevRightKey)||
+                (downKey !== prevDownKey)) {
 
-                formCommand(upKey, rightKey, leftKey);
+                formCommand(upKey, rightKey, leftKey, downKey);
 
                 prevUpKey = upKey;
                 prevLeftKey = leftKey;
                 prevRightKey = rightKey;
+                prevDownKey = downKey;
 
                 keyWasReset = false;
             }
@@ -164,10 +176,15 @@
                 //document.getElementById("viz").setAttribute("x2", "200");
 
                 rightKey = false;
+            } else if(event.code === "ArrowDown") {
+                document.getElementById("down").style.background = "none";
+                document.getElementById("down").style.color = "darkgrey";
+
+                downKey = false;
             }
 
             keyWasReset = true;
-            resetCommand(upKey, rightKey, leftKey);
+            resetCommand(upKey, rightKey, leftKey, downKey);
         });
 
         var command;
@@ -177,16 +194,19 @@
 
         var commandTimeout;
 
-        var formCommand = function(upKey, rightKey, leftKey) {
+        var formCommand = function(upKey, rightKey, leftKey, downKey) {
             //console.log("formCommand", upKey, rightKey, leftKey);
 
             clearTimeout(commandTimeout);
             commandTimeout = setTimeout(function() {
-                if (upKey || leftKey || rightKey) {
+                if (upKey || leftKey || rightKey || downKey) {
 
                     if (upKey) {
                         upParam = "UP";
+                    } else if (downKey) {
+                        upParam = "DWN";
                     }
+
                     if (leftKey) {
                         leftParam = "1";
                     }
@@ -205,7 +225,7 @@
             }, 50);
         };
 
-        var resetCommand = function(upKey, rightKey, leftKey) {
+        var resetCommand = function(upKey, rightKey, leftKey, downKey) {
             //console.log("resetCommand");
             leftParam = "0";
             rightParam = "0";
@@ -213,7 +233,10 @@
 
             if (upKey) {
                 upParam = "UP";
+            } else if (downKey) {
+                upParam = "DWN";
             }
+
             if (leftKey) {
                 leftParam = "1";
             }
