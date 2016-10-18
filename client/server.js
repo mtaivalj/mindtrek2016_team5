@@ -11,12 +11,13 @@ app.get('/exec', function (req, res) {
    // res.end(JSON.stringify(req.query));
    var command = req.query.command;
 
-   child = exec('java -jar test.jar "' + command+'"', function (error, stdout, stderr) {
-      var json = JSON.parse(stdout);
-      res.end(JSON.stringify(json.data));
+   var run = 'java -jar manual.jar "' + command+'"';
+
+   child = exec(run, function (error, stdout, stderr) {
+      // var json = JSON.parse(stdout);
+      // res.end(JSON.stringify(json.data));
    });
 })
-
 
 var server = app.listen(8081, function () {
    var host = server.address().address
